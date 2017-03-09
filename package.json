@@ -1,0 +1,34 @@
+{
+    "name": "monit",
+    "version": "1.0.0",
+    "description": "Monitoring tool",
+    "main": "monit.js",
+    "scripts": {
+        "start": "node monit"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Ziggornif/monit.git"
+    },
+    "author": "Matthieu Drouian <matthieudrouian@gmail.com> (https://github.com/Ziggornif)",
+    "license": "MIT",
+    "dependencies": {
+        "cron": "^1.2.1",
+        "lodash": "^4.17.4",
+        "lowdb": "^0.15.5",
+        "moment": "^2.17.1",
+        "morgan": "^1.8.1",
+        "nodemailer": "^3.1.5",
+        "os-toolbox": "^0.2.3",
+        "uuid": "^3.0.1",
+        "winston": "^2.3.1"
+    },
+    "bugs": {
+        "url": "https://github.com/Ziggornif/monit/issues"
+    },
+    "homepage": "https://github.com/Ziggornif/monit#readme",
+    "keywords": [
+        "monitoring",
+        "server"
+    ]
+}
