@@ -1,0 +1,12 @@
+{
+    "alert" : {
+        "subject": "Alerte ressources VPS <%= vps.name %>",
+        "html" : "<p>Niveau de ressources critique sur le VPS <b>CPU : <%= sysinfos.cpu %> MEM : <%= sysinfos.mem %></b></p>",
+        "text" : "Niveau de ressources critique sur le VPS CPU : <%= sysinfos.cpu %> MEM : <%= sysinfos.mem %>"
+    },
+    "report" : {
+        "subject": "Rapport hebdomadaire de <%= name %>",
+        "html" : "<p>Rapport hebdomadaire de <%= name %></p> <p>Consomation moyenne cpu : <%= cpumoy %>%</p> <p>Pic cpu atteint : <%= cpumax %>%</p> <p>Consomation moyenne mémoire : <%= memmoy %>%</p> <p>Pic mémoire atteint : <%= memmax %>%</p> <p>Nombre d'alertes levées : <%= nbalerts %></p>",
+        "text" : "Rapport hebdomadaire de <%= name %> \nConsomation moyenne cpu : <%= cpumoy %>% \nPic cpu atteint : <%= cpumax %>% \nConsomation moyenne mémoire : <%= memmoy %>% \nPic mémoire atteint : <%= memmax %>% \nNombre d'alertes levées : <%= nbalerts %>"
+    }
+}
