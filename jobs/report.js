@@ -1,10 +1,10 @@
 'use strict'
 const _ = require('lodash');
-var ejs = require('ejs');
+const ejs = require('ejs');
 const low = require('lowdb');
 const moment = require('moment');
 const config = require(__base + "config/config");
-var message = require(__base + 'config/mails/messages.json');
+const message = require(__base + 'config/mails/templates.json');
 const reportjobconf = config.jobs.report;
 const db = low(config.jobs.sysinfos.acquisition.db);
 const mailer = require(__base + "core/mailer/mailer");

@@ -1,8 +1,8 @@
 {
     "alert" : {
-        "subject": "Alerte ressources VPS <%= vps.name %>",
-        "html" : "<p>Niveau de ressources critique sur le VPS <b>CPU : <%= sysinfos.cpu %> MEM : <%= sysinfos.mem %></b></p>",
-        "text" : "Niveau de ressources critique sur le VPS CPU : <%= sysinfos.cpu %> MEM : <%= sysinfos.mem %>"
+        "subject": "Alerte ressources VPS <%= name %>",
+        "html" : "<p>Niveau de ressources critique sur le VPS <b>cpu : <%= cpu %> mémoire : <%= mem %></b></p>",
+        "text" : "Niveau de ressources critique sur le VPS cpu : <%= cpu %> mémoire : <%= mem %>"
     },
     "report" : {
         "subject": "Rapport hebdomadaire de <%= name %>",

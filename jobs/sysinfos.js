@@ -2,9 +2,11 @@
 const uuid = require('uuid');
 const low = require('lowdb');
 const q = require('q');
+const ejs = require('ejs');
 const ostb = require('os-toolbox');
 const mailer = require(__base + "core/mailer/mailer");
 const config = require(__base + "config/config");
+const message = require(__base + 'config/mails/templates.json');
 const sysinfosjobconf = config.jobs.sysinfos;
 const db = low(sysinfosjobconf.acquisition.db);
 
@@ -12,8 +14,8 @@ let lastalert = null;
 
 module.exports = {
     cronTime: sysinfosjobconf.cronTime,
-    onTick: function() {
-        getSysInfos().then(function(result) {
+    onTick: function () {
+        getSysInfos().then(function (result) {
             let currentTime = new Date();
             let sysinfo = {
                 id: uuid(),
@@ -46,10 +48,11 @@ function checkResourcesLevel(data) {
         if (!lastalert || data.date.getTime() - lastalert.getTime() >= sysinfosjobconf.resendafter) {
             lastalert = data.date;
             insertAlert(data);
+            data.name = config.name;
             mailer.sendMail({
-                subject: 'Alerte ressources VPS',
-                text: 'Niveau de ressources critique sur le VPS CPU : ' + data.cpu + ' MEM : ' + data.mem,
-                html: '<p>Niveau de ressources critique sur le VPS <b>CPU : ' + data.cpu + ' MEM : ' + data.mem + '</b></p>'
+                subject: ejs.render(message.alert.subject, data),
+                text: ejs.render(message.alert.text, data),
+                html: ejs.render(message.alert.html, data)
             });
 
         }
@@ -61,7 +64,7 @@ function getSysInfos() {
     q.all([
         ostb.cpuLoad(),
         ostb.memoryUsage()
-    ]).then(function(results) {
+    ]).then(function (results) {
         deferred.resolve({
             cpu: results[0],
             mem: results[1]
