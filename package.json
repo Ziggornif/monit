@@ -18,9 +18,11 @@
     "lodash": "^4.17.4",
     "lowdb": "^0.15.5",
     "moment": "^2.17.1",
+    "node-telegram-bot-api": "^0.27.0",
     "nodemailer": "^3.1.5",
     "os-toolbox": "^0.2.3",
     "q": "^1.4.1",
+    "slackbots": "^1.0.2",
     "uuid": "^3.0.1",
     "winston": "^2.3.1"
   },

@@ -1,11 +1,7 @@
 'use strict'
 global.__base = __dirname + '/';
-require(__base + 'core/logger/logger');
-const jobSysInfos = require("./jobs/sysinfos");
-const jobReport = require("./jobs/report");
-const CronJob = require('cron').CronJob;
+const jobsloader = require(__base + "core/jobs/jobsloader");
+const botsloader = require(__base +"core/bots/botsloader");
 
-let sysinfosjob = new CronJob(jobSysInfos);
-let reportjob = new CronJob(jobReport);
-sysinfosjob.start();
-reportjob.start();
+jobsloader.startJobs();
+botsloader.startBots();

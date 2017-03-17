@@ -4,6 +4,8 @@ const low = require('lowdb');
 const q = require('q');
 const ejs = require('ejs');
 const ostb = require('os-toolbox');
+const sysinfos = require(__base+"core/services/sysinfos");
+const telegramBot = require(__base+"core/bots/telegram");
 const mailer = require(__base + "core/mailer/mailer");
 const config = require(__base + "config/config");
 const message = require(__base + 'config/mails/templates.json');
@@ -15,7 +17,7 @@ let lastalert = null;
 module.exports = {
     cronTime: sysinfosjobconf.cronTime,
     onTick: function () {
-        getSysInfos().then(function (result) {
+        sysinfos.getInfos().then(function (result) {
             let currentTime = new Date();
             let sysinfo = {
                 id: uuid(),
@@ -49,26 +51,22 @@ function checkResourcesLevel(data) {
             lastalert = data.date;
             insertAlert(data);
             data.name = config.name;
-            mailer.sendMail({
-                subject: ejs.render(message.alert.subject, data),
-                text: ejs.render(message.alert.text, data),
-                html: ejs.render(message.alert.html, data)
-            });
-
+            
+            if(sysinfosjobconf.alerte.type.email){
+                // mailer.sendMail({
+            //     subject: ejs.render(message.alert.subject, data),
+            //     text: ejs.render(message.alert.text, data),
+            //     html: ejs.render(message.alert.html, data)
+            // });
+            }
+            
+            if(sysinfosjobconf.alerte.type.telegram){
+                telegramBot.sendMessage(config.bots.telegram.alertChannelId, ejs.render(message.alert.text, data));
+            }
+            
+            if(sysinfosjobconf.alerte.type.slack){
+                // DO SOMETHING
+            }
         }
     }
-}
-
-function getSysInfos() {
-    let deferred = q.defer();
-    q.all([
-        ostb.cpuLoad(),
-        ostb.memoryUsage()
-    ]).then(function (results) {
-        deferred.resolve({
-            cpu: results[0],
-            mem: results[1]
-        });
-    });
-    return deferred.promise;
 }

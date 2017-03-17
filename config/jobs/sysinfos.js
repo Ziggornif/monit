@@ -8,6 +8,11 @@ module.exports = {
     },
     alerte: {
         active: true,
+        type: {
+            email: true,
+            telegram: true,
+            slack: false
+        },
         resendafter: "1200000"
     },
     metrics: {
