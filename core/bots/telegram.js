@@ -19,6 +19,10 @@ bot.on('message', (msg) => {
                 bot.sendMessage(chatId, 'Consommation actuelle de ' + config.name + '\ncpu: ' + result.cpu + '% mem: ' + result.mem + '%.');
             });
             break;
+        case '/uptime':
+            let uptime = sysinfos.uptime();
+            bot.sendMessage(chatId, 'Le serveur est en ligne depuis ' + uptime.days + ' jours ' + uptime.hours + ' heures et ' + uptime.minutes + ' minutes');
+            break;
         default:
             bot.sendMessage(chatId, 'Commande non trouvée.\n/help pour avoir la liste des commandes disponibles');
     }
