@@ -10,21 +10,31 @@ const bot = new TelegramBot(config.bots.telegram.token, {
 
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
+    var opts = {
+        reply_markup: JSON.stringify({
+            keyboard: [
+                ['/sysinfos', '/uptime'],
+                ['/help']
+            ],
+            resize_keyboard: true,
+            one_time_keyboard: true
+        })
+    };
     switch(msg.text){
         case '/help':
-            bot.sendMessage(chatId, 'Liste des commandes :\n/help : liste des commandes disponibles\n/sysinfos : consommation du serveur monitoré');
+            bot.sendMessage(chatId, 'Liste des commandes :\n/help : liste des commandes disponibles\n/sysinfos : consommation du serveur monitoré\n/uptime : uptime du serveur monitoré', opts);
             break;
         case '/sysinfos':
             sysinfos.getInfos().then(function(result){
-                bot.sendMessage(chatId, 'Consommation actuelle de ' + config.name + '\ncpu: ' + result.cpu + '% mem: ' + result.mem + '%.');
+                bot.sendMessage(chatId, 'Consommation actuelle de ' + config.name + '\ncpu: ' + result.cpu + '% mem: ' + result.mem + '%.', opts);
             });
             break;
         case '/uptime':
             let uptime = sysinfos.uptime();
-            bot.sendMessage(chatId, 'Le serveur est en ligne depuis ' + uptime.days + ' jours ' + uptime.hours + ' heures et ' + uptime.minutes + ' minutes');
+            bot.sendMessage(chatId, 'Le serveur est en ligne depuis ' + uptime.days + ' jours ' + uptime.hours + ' heures et ' + uptime.minutes + ' minutes', opts);
             break;
         default:
-            bot.sendMessage(chatId, 'Commande non trouvée.\n/help pour avoir la liste des commandes disponibles');
+            bot.sendMessage(chatId, 'Commande non trouvée.\n/help pour avoir la liste des commandes disponibles', opts);
     }
 });
 
