@@ -1,12 +1,12 @@
 const ostb = require('os-toolbox');
 const q = require('q');
 
-exports.getInfos = function() {
+exports.getInfos = function () {
     let deferred = q.defer();
     q.all([
         ostb.cpuLoad(),
         ostb.memoryUsage()
-    ]).then(function(results) {
+    ]).then(function (results) {
         deferred.resolve({
             cpu: results[0],
             mem: results[1]
@@ -15,7 +15,7 @@ exports.getInfos = function() {
     return deferred.promise;
 }
 
-exports.getInfosFull = function() {
+exports.getInfosFull = function () {
     let deferred = q.defer();
     q.all([
         ostb.cpuLoad(),
@@ -23,7 +23,7 @@ exports.getInfosFull = function() {
         ostb.platform(),
         ostb.uptime(),
         ostb.currentProcesses()
-    ]).then(function(results) {
+    ]).then(function (results) {
         deferred.resolve({
             cpu: results[0],
             mem: results[1],
@@ -35,7 +35,7 @@ exports.getInfosFull = function() {
     return deferred.promise;
 }
 
-exports.uptime = function() {
+exports.uptime = function () {
     let uptime = ostb.uptime();
     let secondsInAMinute = 60;
     let secondsInAnHour = 60 * secondsInAMinute;
@@ -53,7 +53,17 @@ exports.uptime = function() {
     let minutes = Math.round(minuteSeconds / secondsInAMinute);
     return {
         days: days,
-        hours: hours, 
+        hours: hours,
         minutes: minutes
     };
+}
+
+exports.freecache = function () {
+    let deferred = q.defer();
+    childProcess.exec('echo 3 > /proc/sys/vm/drop_caches', (err) => {
+        if (err) {
+            deffered.reject(err);
+        }
+    });
+    return deferred.promise;
 }

@@ -1,9 +1,7 @@
 'use strict'
 const uuid = require('uuid');
 const low = require('lowdb');
-const q = require('q');
 const ejs = require('ejs');
-const ostb = require('os-toolbox');
 const sysinfos = require(__base+"core/services/sysinfos");
 const telegramBot = require(__base+"core/bots/telegram");
 const mailer = require(__base + "core/mailer/mailer");
