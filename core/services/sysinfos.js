@@ -1,5 +1,6 @@
 const ostb = require('os-toolbox');
 const q = require('q');
+const childProcess = require('child_process');
 
 exports.getInfos = function () {
     let deferred = q.defer();
@@ -62,7 +63,7 @@ exports.freecache = function () {
     let deferred = q.defer();
     childProcess.exec('echo 3 > /proc/sys/vm/drop_caches', (err) => {
         if (err) {
-            deffered.reject(err);
+            deferred.reject(err);
         }
     });
     return deferred.promise;
