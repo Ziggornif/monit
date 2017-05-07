@@ -64,6 +64,8 @@ exports.freecache = function () {
     childProcess.exec('echo 3 > /proc/sys/vm/drop_caches', (err) => {
         if (err) {
             deferred.reject(err);
+        } else {
+            deferred.resolve();
         }
     });
     return deferred.promise;
