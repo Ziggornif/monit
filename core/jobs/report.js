@@ -12,40 +12,44 @@ const mailer = require(__base + "core/mailer/mailer");
 module.exports = {
     cronTime: reportjobconf.cronTime,
     onTick: function () {
-        if (reportjobconf.active) {
-            let report = {};
-            report.name = config.name;
-            let datedebut = new Date(moment().subtract(7, 'days').format());
-            let results = db.get('monit').filter(function (o) {
-                return new Date(o.date).getTime() > datedebut.getTime();
-            }).value();
-            
-            if (results) {
-                report.nbalerts = db.get('alert').filter(function (o) {
+        try {
+            if (reportjobconf.active) {
+                let report = {};
+                report.name = config.name;
+                let datedebut = new Date(moment().subtract(7, 'days').format());
+                let results = db.get('monit').filter(function (o) {
                     return new Date(o.date).getTime() > datedebut.getTime();
-                }).size().value();
+                }).value();
 
-                let cpumoy = 0;
-                let memmoy = 0;
-                results.forEach(result => {
-                    cpumoy += result.cpu;
-                    memmoy += result.mem;
-                });
-                report.cpumoy = Math.round((cpumoy / results.length) * 100) / 100;
-                report.memmoy = Math.round((memmoy / results.length) * 100) / 100;
-                report.cpumax = _.maxBy(results, function (o) {
-                    return o.cpu;
-                }).cpu;
-                report.memmax = _.maxBy(results, function (o) {
-                    return o.mem;
-                }).mem;
+                if (results) {
+                    report.nbalerts = db.get('alert').filter(function (o) {
+                        return new Date(o.date).getTime() > datedebut.getTime();
+                    }).size().value();
 
-                mailer.sendMail({
-                    subject: ejs.render(message.report.subject, report),
-                    text: ejs.render(message.report.text, report),
-                    html: ejs.render(message.report.html, report)
-                });
+                    let cpumoy = 0;
+                    let memmoy = 0;
+                    results.forEach(result => {
+                        cpumoy += result.cpu;
+                        memmoy += result.mem;
+                    });
+                    report.cpumoy = Math.round((cpumoy / results.length) * 100) / 100;
+                    report.memmoy = Math.round((memmoy / results.length) * 100) / 100;
+                    report.cpumax = _.maxBy(results, function (o) {
+                        return o.cpu;
+                    }).cpu;
+                    report.memmax = _.maxBy(results, function (o) {
+                        return o.mem;
+                    }).mem;
+
+                    mailer.sendMail({
+                        subject: ejs.render(message.report.subject, report),
+                        text: ejs.render(message.report.text, report),
+                        html: ejs.render(message.report.html, report)
+                    });
+                }
             }
+        } catch (error) {
+
         }
     },
     start: false

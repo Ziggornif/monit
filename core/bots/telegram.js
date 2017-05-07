@@ -14,7 +14,7 @@ bot.on('message', (msg) => {
         reply_markup: JSON.stringify({
             keyboard: [
                 ['/sysinfos', '/uptime'],
-                ['/help']
+                ['/freemem', '/help']
             ],
             resize_keyboard: true,
             one_time_keyboard: true
@@ -32,6 +32,13 @@ bot.on('message', (msg) => {
         case '/uptime':
             let uptime = sysinfos.uptime();
             bot.sendMessage(chatId, 'Le serveur est en ligne depuis ' + uptime.days + ' jours ' + uptime.hours + ' heures et ' + uptime.minutes + ' minutes', opts);
+            break;
+        case '/freemem':
+            sysinfos.freecache().then(function(){
+                bot.sendMessage(chatId, 'Nettoyage du cache serveur terminé', opts);
+            }, function(error){
+                bot.sendMessage(chatId, 'Erreur lors du nettoyage du cache serveur', opts);
+            });
             break;
         default:
             bot.sendMessage(chatId, 'Commande non trouvée.\n/help pour avoir la liste des commandes disponibles', opts);
